@@ -1,0 +1,22 @@
+# ==========================================================
+# 📡 TEMPLATE SENSORS — Phones Wi-Fi BSSID (abstraction)
+# ----------------------------------------------------------
+# ROLE
+#   Expose stable entities for triggers/conditions when the
+#   underlying phone Wi-Fi BSSID sensor entity_id is dynamic
+#   (stored via helpers).
+# ==========================================================
+
+- sensor:
+
+    - name: "user_1_bssid_dynamic"
+      unique_id: user_1_bssid_dynamic
+      state: >
+        {% set ent = states('input_text.user_1_wifi_bssid') %}
+        {{ states(ent) }}
+
+    - name: "user_2_bssid_dynamic"
+      unique_id: user_2_bssid_dynamic
+      state: >
+        {% set ent = states('input_text.user_2_wifi_bssid') %}
+        {{ states(ent) }}
