@@ -1,0 +1,69 @@
+# ==========================================================
+#  INPUT TEXT — Phones (master helpers)
+# ----------------------------------------------------------
+#  ROLE
+#    Stores the raw phone slug (example: pixel_7a).
+#
+#  This value is used to automatically derive:
+#      - notify.mobile_app_<phone>
+#      - device_tracker.<phone>
+#      - sensor.<phone>_wi_fi_bssid
+#
+#  Changing phone only requires updating ONE helper.
+# ==========================================================
+
+user_1_phone:
+  name: "User 1 phone slug"
+  max: 50
+  icon: mdi:cellphone
+
+user_2_phone:
+  name: "User 2 phone slug"
+  max: 50
+  icon: mdi:cellphone
+
+
+# ==========================================================
+#  INPUT TEXT — Notification services (derived)
+# ----------------------------------------------------------
+#  These helpers store the notify service names.
+#  They are automatically populated by the sync automation.
+# ==========================================================
+
+user_1_notify:
+  name: "User 1 notify service"
+  icon: mdi:cellphone-text
+
+user_2_notify:
+  name: "User 2 notify service"
+  icon: mdi:cellphone-text
+
+
+# ==========================================================
+#  INPUT TEXT — Device trackers (derived)
+# ----------------------------------------------------------
+#  Stores the entity_id of the phone device_tracker.
+# ==========================================================
+
+user_1_tracker:
+  name: "User 1 tracker entity_id"
+  icon: mdi:crosshairs-gps
+
+user_2_tracker:
+  name: "User 2 tracker entity_id"
+  icon: mdi:crosshairs-gps
+
+
+# ==========================================================
+#  INPUT TEXT — Wi-Fi BSSID sensors (derived)
+# ----------------------------------------------------------
+#  Stores the entity_id of the phone Wi-Fi BSSID sensor.
+# ==========================================================
+
+user_1_wifi_bssid:
+  name: "User 1 WiFi BSSID entity_id"
+  icon: mdi:wifi
+
+user_2_wifi_bssid:
+  name: "User 2 WiFi BSSID entity_id"
+  icon: mdi:wifi
