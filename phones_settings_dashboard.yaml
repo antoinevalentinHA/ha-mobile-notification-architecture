@@ -1,0 +1,35 @@
+title: Phones
+icon: mdi:cellphone-cog
+
+views:
+  - title: Phone settings
+    path: phone-settings
+    icon: mdi:cellphone
+
+    cards:
+      - type: entities
+        title: Users (phone slug)
+        show_header_toggle: false
+        entities:
+          - entity: input_text.user_1_phone
+            name: User 1 phone slug
+          - entity: input_text.user_2_phone
+            name: User 2 phone slug
+
+      - type: entities
+        title: Derived helpers (auto-filled)
+        show_header_toggle: false
+        entities:
+          - entity: input_text.user_1_notify
+            name: User 1 notify service
+          - entity: input_text.user_1_tracker
+            name: User 1 tracker entity_id
+          - entity: input_text.user_1_wifi_bssid
+            name: User 1 Wi-Fi BSSID sensor
+
+          - entity: input_text.user_2_notify
+            name: User 2 notify service
+          - entity: input_text.user_2_tracker
+            name: User 2 tracker entity_id
+          - entity: input_text.user_2_wifi_bssid
+            name: User 2 Wi-Fi BSSID sensor
