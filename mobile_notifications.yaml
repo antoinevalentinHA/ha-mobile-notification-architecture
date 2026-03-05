@@ -1,0 +1,97 @@
+# ==========================================================
+#  SCRIPTS — Mobile notifications (abstraction layer)
+# ----------------------------------------------------------
+#  ROLE
+#    Provide a single, stable notification API.
+#
+#  Rules:
+#    - Automations should NEVER call notify.mobile_app_* directly
+#    - All notifications go through these scripts
+#
+#  Target abstraction:
+#    - Each user target is stored in an input_text helper:
+#        input_text.user_1_notify
+#        input_text.user_2_notify
+#
+#  Changing a phone/app/notify service requires updating helpers,
+#  not editing automations.
+# ==========================================================
+
+
+notification_send:
+  alias: "Notification - Send"
+  mode: parallel
+  fields:
+    target:
+      description: "Helper containing the notify service"
+      example: "input_text.user_1_notify"
+    title:
+      description: "Notification title"
+      example: "Ventilation"
+    message:
+      description: "Notification message"
+      example: "Windows open upstairs"
+  sequence:
+    # ------------------------------------------------------
+    # Resolve notify service from helper
+    # ------------------------------------------------------
+    - variables:
+        svc: "{{ states(target) }}"
+
+    # ------------------------------------------------------
+    # Send
+    # ------------------------------------------------------
+    - service: "{{ svc }}"
+      data:
+        title: "{{ title }}"
+        message: "{{ message }}"
+
+
+notification_send_household:
+  alias: "Notification - Send Household"
+  mode: parallel
+  fields:
+    title:
+      description: "Notification title"
+    message:
+      description: "Notification message"
+  sequence:
+    # ------------------------------------------------------
+    # User 1
+    # ------------------------------------------------------
+    - service: "{{ states('input_text.user_1_notify') }}"
+      data:
+        title: "{{ title }}"
+        message: "{{ message }}"
+
+    # ------------------------------------------------------
+    # User 2
+    # ------------------------------------------------------
+    - service: "{{ states('input_text.user_2_notify') }}"
+      data:
+        title: "{{ title }}"
+        message: "{{ message }}"
+
+
+notification_send_advanced:
+  alias: "Notification - Send Advanced"
+  mode: parallel
+  fields:
+    target:
+      description: "Helper containing the notify service"
+      example: "input_text.user_1_notify"
+    title:
+      description: "Notification title"
+    message:
+      description: "Notification message"
+    extra:
+      description: "Additional notify payload (Android options, etc.)"
+      default: {}
+  sequence:
+    - variables:
+        svc: "{{ states(target) }}"
+    - service: "{{ svc }}"
+      data:
+        title: "{{ title }}"
+        message: "{{ message }}"
+        data: "{{ extra }}"
