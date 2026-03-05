@@ -163,6 +163,62 @@ Optional:
 
 ---
 
+## Usage examples
+
+### Simple notification
+
+Example automation sending a notification to a specific user.
+
+```yaml
+action:
+  - action: script.notification_send
+    data:
+      target: input_text.user_1_notify
+      title: "Garage"
+      message: "Garage door opened"
+```
+
+### Household notification
+
+Send the same notification to both users.
+
+```yaml
+action:
+  - action: script.notification_send_household
+    data:
+      title: "Washing machine"
+      message: "Cycle finished"
+```
+
+### Advanced Android notification
+
+Example with dynamic message and Android priority parameters.
+
+```yaml
+action:
+  - action: script.notification_send_advanced
+    data:
+      target: input_text.user_1_notify
+      title: "🚨 Motion detected"
+      message: >
+        {% set sensors = {
+          'binary_sensor.motion_living_room': "living room",
+          'binary_sensor.motion_entry': "entry",
+          'binary_sensor.motion_garage': "garage"
+        } %}
+
+        Motion detected at {{ now().strftime('%H:%M') }}
+        in **{{ sensors.get(trigger.entity_id, 'unknown area') }}**.
+
+        Alarm triggered.
+      extra:
+        ttl: 0
+        priority: high
+        importance: high
+```
+
+---
+
 ## Included scripts
 
 ### `script.notification_send`
