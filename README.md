@@ -111,58 +111,6 @@ template_sensors/
 
 ---
 
-## Example usage
-
-Automation calls a script (never `notify.mobile_app_*` directly):
-
-```yaml
-service: script.notification_send
-data:
-  target: input_text.user_1_notify
-  title: "Garage"
-  message: "Door opened"
-```
-
----
-
-## Changing phones
-
-To replace a phone:
-
-* update `input_text.user_1_phone` from `pixel_7a` to `pixel_9`
-* the automation rebuilds derived helpers automatically
-* no automation refactor required
-
----
-
-## Installation
-
-1. Copy files into your config (adapt paths to your structure)
-
-* `helpers/phones_helpers.yaml`
-* `automations/phones_sync_derived_helpers.yaml`
-* `scripts/mobile_notifications.yaml`
-* `template_sensors/phones_bssid_dynamic.yaml` (optional)
-
-2. Set the master helpers:
-
-* `input_text.user_1_phone` = your phone slug (example: `pixel_7a`)
-* `input_text.user_2_phone` = your phone slug
-
-Optional:
-
-* `input_text.user_1_name` / `input_text.user_2_name` for UI labels.
-
-3. Reload scripts, automations, and template entities.
-
-4. Verify derived helpers are populated:
-
-* `input_text.user_1_notify` == `notify.mobile_app_<your_phone>`
-* `input_text.user_1_tracker` == `device_tracker.<your_phone>`
-* `input_text.user_1_wifi_bssid` == `sensor.<your_phone>_wi_fi_bssid`
-
----
-
 ## Usage examples
 
 ### Simple notification
@@ -216,6 +164,44 @@ action:
         priority: high
         importance: high
 ```
+
+---
+
+## Changing phones
+
+To replace a phone:
+
+* update `input_text.user_1_phone` from `pixel_7a` to `pixel_9`
+* the automation rebuilds derived helpers automatically
+* no automation refactor required
+
+---
+
+## Installation
+
+1. Copy files into your config (adapt paths to your structure)
+
+* `helpers/phones_helpers.yaml`
+* `automations/phones_sync_derived_helpers.yaml`
+* `scripts/mobile_notifications.yaml`
+* `template_sensors/phones_bssid_dynamic.yaml` (optional)
+
+2. Set the master helpers:
+
+* `input_text.user_1_phone` = your phone slug (example: `pixel_7a`)
+* `input_text.user_2_phone` = your phone slug
+
+Optional:
+
+* `input_text.user_1_name` / `input_text.user_2_name` for UI labels.
+
+3. Reload scripts, automations, and template entities.
+
+4. Verify derived helpers are populated:
+
+* `input_text.user_1_notify` == `notify.mobile_app_<your_phone>`
+* `input_text.user_1_tracker` == `device_tracker.<your_phone>`
+* `input_text.user_1_wifi_bssid` == `sensor.<your_phone>_wi_fi_bssid`
 
 ---
 
