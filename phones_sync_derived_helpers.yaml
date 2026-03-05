@@ -1,0 +1,59 @@
+# ==========================================================
+#  AUTOMATION :
+#     Phones — Synchronize derived helpers
+#
+#  ROLE
+#     Automatically update derived helpers when the master
+#     phone slug helper changes.
+#
+#  The phone slug (example: pixel_7a) is used to build:
+#     - notify.mobile_app_<phone>
+#     - device_tracker.<phone>
+#     - sensor.<phone>_wi_fi_bssid
+#
+#  This ensures that changing a phone only requires updating
+#  one helper.
+# ==========================================================
+
+- id: "phones_sync_derived_helpers"
+  alias: "Phones - Sync derived helpers"
+  mode: parallel
+  max: 2
+
+  trigger:
+    - platform: state
+      entity_id:
+        - input_text.user_1_phone
+        - input_text.user_2_phone
+
+  variables:
+    # Phone slug (example: pixel_7a)
+    phone: "{{ trigger.to_state.state | lower | trim }}"
+
+    # Identify which user helper triggered the automation
+    prefix: >
+      {{ 'user_1' if trigger.entity_id.endswith('user_1_phone') else 'user_2' }}
+
+    # Derived entities
+    notify_entity: "notify.mobile_app_{{ phone }}"
+    wifi_bssid_sensor: "sensor.{{ phone }}_wi_fi_bssid"
+    tracker_entity: "device_tracker.{{ phone }}"
+
+  action:
+
+    # Mapping of derived helpers
+    - variables:
+        mapping:
+          notify: "{{ notify_entity }}"
+          wifi_bssid: "{{ wifi_bssid_sensor }}"
+          tracker: "{{ tracker_entity }}"
+
+    # Generic loop to populate helpers
+    - repeat:
+        for_each: "{{ mapping.keys() | list }}"
+        sequence:
+          - action: input_text.set_value
+            target:
+              entity_id: "input_text.{{ prefix }}_{{ repeat.item }}"
+            data:
+              value: "{{ mapping[repeat.item] }}"
